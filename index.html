@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tishox — small apps for everyday life</title>
+<meta name="description" content="Tishox makes small, carefully made apps for everyday life. The first, Pomegranate, is a recipe app coming soon to iOS and Android.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout: a quiet monochrome studio page; the only colour comes from the apps themselves, each shown as a full-colour tile on the "shelf". Single deliberate light look. */
+:root{
+  --paper:#eef0ec;      /* studio ground, faint green-grey */
+  --card:#f8f9f6;
+  --ink:#111614;
+  --grey:#5d6662;
+  --line:rgba(17,22,20,.12);
+  /* Pomegranate's own colours, used only inside its tile */
+  --pg-teal:#0d3b40; --pg-ivory:#f3f2ee; --pg-blush:#ecc6d3; --pg-mint:#b5d0cf;
+  --display:"Syne","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --text:"Hanken Grotesk","Helvetica Neue",Arial,system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding-inline:24px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+.label{font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin:0}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:26px}
+.mark{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.03em;text-decoration:none;display:inline-flex;align-items:baseline;gap:2px}
+.mark i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink);font-style:normal}
+.top nav{display:flex;gap:26px;font-size:15px;font-weight:500}
+.top nav a{text-decoration:none;color:var(--grey)}
+.top nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding-block:72px 64px;display:grid;gap:26px}
+.hero h1{font-weight:800;font-size:clamp(46px,8.2vw,112px);line-height:.92;letter-spacing:-.045em;max-width:12ch}
+.hero p{margin:0;max-width:52ch;font-size:clamp(17px,1.7vw,20px);color:var(--grey)}
+
+/* shelf */
+.shelf{padding-block:24px 96px}
+.shelf-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:1px solid var(--line);padding-top:18px;margin-bottom:22px}
+.shelf-head .count{font-family:var(--display);font-weight:700;font-size:15px;color:var(--grey);font-variant-numeric:tabular-nums}
+.apps{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+
+/* one app tile; a launched app takes span 12, later apps can sit two-up with .app--half */
+.app{grid-column:span 12;border-radius:30px;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);min-height:520px}
+.app--pomegranate{background:radial-gradient(80% 90% at 75% 55%,#155860 0%,var(--pg-teal) 60%,#0a2f33 100%);color:var(--pg-ivory)}
+.app .info{padding:44px 40px 40px;display:flex;flex-direction:column;gap:18px}
+.app .logo{width:250px;height:auto}
+.app .tagline{font-family:var(--display);font-weight:700;font-size:clamp(26px,2.6vw,34px);line-height:1.05;letter-spacing:-.02em;margin:6px 0 0}
+.app .desc{margin:0;color:var(--pg-mint);max-width:40ch}
+.app ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15.5px;color:var(--pg-ivory)}
+.app li{display:flex;gap:10px;align-items:baseline}
+.app li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--pg-blush);transform:translateY(-2px)}
+.app .foot{margin-top:auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.visit{display:inline-flex;align-items:center;gap:10px;height:50px;padding-inline:22px;border-radius:999px;background:var(--pg-ivory);color:var(--pg-teal);font-weight:600;font-size:16px;text-decoration:none;transition:transform .2s}
+.visit:hover{transform:translateX(3px)}
+.visit svg{width:16px;height:16px}
+.status{font-size:14px;color:var(--pg-blush);font-weight:600}
+.app .film{align-self:center;width:100%;aspect-ratio:16/9;height:auto;-webkit-mask-image:linear-gradient(to right,transparent,#000 12%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 12%,#000 92%,transparent)}
+
+.next{grid-column:span 12;border:1.5px dashed var(--line);border-radius:30px;padding:30px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--grey)}
+.next b{font-family:var(--display);font-weight:700;font-size:20px;color:var(--ink)}
+
+/* approach */
+.approach{padding-block:16px 96px}
+.approach .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:22px}
+.principle{background:var(--card);border-radius:22px;padding:28px 26px;display:grid;gap:10px;align-content:start}
+.principle h3{font-weight:700;font-size:22px;letter-spacing:-.02em;line-height:1.1}
+.principle p{margin:0;color:var(--grey);font-size:16px}
+
+/* contact + footer */
+.contact{border-top:1px solid var(--line);padding-block:56px 40px;display:grid;gap:14px}
+.contact h2{font-weight:800;font-size:clamp(30px,4.4vw,52px);letter-spacing:-.035em;line-height:1}
+.email{font-size:clamp(18px,2vw,22px);font-weight:600;text-decoration:none;width:fit-content;border-bottom:2px solid var(--ink)}
+.legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;color:var(--grey);padding-block:24px 36px}
+
+@media (max-width:900px){
+  .app{grid-template-columns:1fr;min-height:0}
+  .app .info{padding:32px 26px 8px}
+  .app .film{-webkit-mask-image:none;mask-image:none}
+  .approach .grid{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .top nav{gap:18px}
+  .hero{padding-block:40px 40px}
+  .app .logo{width:200px}
+}
+@media (prefers-reduced-motion:reduce){ .visit{transition:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#top" aria-label="Tishox home">tishox<i aria-hidden="true"></i></a>
+    <nav aria-label="Main">
+      <a href="#apps">Apps</a>
+      <a href="#approach">Approach</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <h1>Small apps for everyday life.</h1>
+    <p>Tishox makes simple, carefully made apps for the things you do every week. The first one, Pomegranate, is on its way.</p>
+  </section>
+
+  <section class="shelf" id="apps" aria-labelledby="apps-title">
+    <div class="shelf-head">
+      <h2 class="label" id="apps-title">Apps</h2>
+      <span class="count">01</span>
+    </div>
+
+    <div class="apps">
+      <article class="app app--pomegranate" aria-labelledby="pg-title">
+        <div class="info">
+          <img class="logo" src="img/logo-on-dark.png" alt="Pomegranate">
+          <h3 class="tagline" id="pg-title">A recipe app with a little more color</h3>
+          <p class="desc">Save recipes from any web page or screenshot, plan a menu, and get a shopping list in a few taps.</p>
+          <ul>
+            <li>Import from a link or a screenshot</li>
+            <li>Shopping lists sorted by aisle</li>
+            <li>Share the list and split the shop</li>
+          </ul>
+          <div class="foot">
+            <a class="visit" href="https://pomegranate.tishox.com" aria-label="Visit the Pomegranate website, pomegranate.tishox.com">Visit Pomegranate
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+            </a>
+            <span class="status">Coming soon to iOS &amp; Android</span>
+          </div>
+        </div>
+        <video class="film" id="film" src="media/pomegranate-carousel-promo.mp4" poster="media/pomegranate-carousel-promo-poster.jpg"
+          autoplay muted loop playsinline preload="metadata"
+          aria-label="Pomegranate's app screens turning on a carousel: recipe collection, adding recipes, screenshot import, shopping list and shopping by aisle."></video>
+      </article>
+
+      <div class="next">
+        <b>More apps on the way</b>
+        <span>New apps will appear here as they launch.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="approach" id="approach" aria-labelledby="approach-title">
+    <div class="shelf-head"><h2 class="label" id="approach-title">Approach</h2></div>
+    <div class="grid">
+      <div class="principle">
+        <h3>A few things, done properly</h3>
+        <p>Each app does a small number of jobs and does them well, without a long list of features you’ll never use.</p>
+      </div>
+      <div class="principle">
+        <h3>Out of your way</h3>
+        <p>No clutter between you and what you came for. Open the app, do the thing, get on with your day.</p>
+      </div>
+      <div class="principle">
+        <h3>Better together</h3>
+        <p>Everyday life is often shared, so the apps are too. Send a list to your partner and finish the job faster.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">Say hello.</h2>
+    <a class="email" href="mailto:tishox.apps@gmail.com">tishox.apps@gmail.com</a>
+  </section>
+
+  <footer class="legal">
+    <span>© 2026 Tishox</span>
+    <span>Apps: <a href="https://pomegranate.tishox.com">Pomegranate</a></span>
+  </footer>
+</div>
+
+<script>
+try{
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const v=document.getElementById('film'); v.removeAttribute('autoplay'); v.pause(); v.controls=true;
+  }
+}catch(e){}
+</script>
+</body>
+</html>
