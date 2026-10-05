@@ -3,7 +3,7 @@
 Upload the contents of this folder to the root of tishox.com.
 
 - `index.html`: the page
-- `img/logo-on-dark.png`: Pomegranate logo for its app tile
+- `img/pomegranate-wordmark.svg`: Pomegranate logo for its app tile
 - `media/`: Pomegranate's carousel video and poster image
 
 ## Adding the next app
